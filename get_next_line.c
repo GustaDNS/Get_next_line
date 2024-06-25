@@ -12,6 +12,12 @@
 
 #include "get_next_line.h"
 
+
+/**
+ * @brief Pega uma string, encontra o primeiro '\ n', copia tudo que vem dps dele para um novo buffer e libera o buffer original
+ * @param leftover Usada para armazenar a "sobra" da string 'line_buffer' após um caracter espcífico
+ * @return Retorna o ponteiro 'leftover' que é part da string 'line_buffer' após o '\ n'
+ */
 static char	*_set_line(char *line_buffer)
 {
 	char	*leftover;
@@ -24,6 +30,13 @@ static char	*_set_line(char *line_buffer)
 	return (leftover);
 }
 
+/**
+ * @brief Lê os dados do fd em blocos do tamanho "BUFFER_SIZE" e concatena esses dados a uma string (left_c) até encontra uma quebra de linha \n ou não haver mais dados para ler
+ * @param left_c Representa uma string que conterá dados da leitura anterior
+ * @param b_read Armazena o número de bytes lidos pela função 'read'
+ * @param buffer É um ponteiro para um buffer alocado dinamicamente que será usado para armazenar os dados lidos do fd
+ * @return Retorna a string 'left_c' que agora contém os dados lidos
+ */
 static char	*_fill_line_buffer(int fd, char *left_c)
 {
 	ssize_t	b_read;
@@ -55,6 +68,12 @@ char	*free_data(char *buffer, char *left_c)
 	return (NULL);
 }
 
+/**
+ * @brief Lê a próxima linha de um fd, gerencia qualquer sobra de dados entre chamadas usando uma váriavel estática
+ * @param left_c Armazena qualquer sobre de dados da última chamada da função. Como é estática, ela mantém seu valor entre diferentes chamadas da função 
+ * @param line Armazena a linha dada pelo fd
+ * @return A linha lida
+ */
 char	*get_next_line(int fd)
 {
 	static char	*left_c;
